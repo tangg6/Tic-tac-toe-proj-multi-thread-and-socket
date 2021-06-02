@@ -1,18 +1,32 @@
 import pygame
 from grid import Grid
 
+pygame.init()
+
 import os
-os.environ['SDL_VIDEO_WINDOW_POS'] = '200,100'
+os.environ['SDL_VIDEO_WINDOW_POS'] = '850,100'
+
+import threading
+
+def create_thread(target):
+    thread = threading.Thread(target=target)
+    thread.daemon = True # Use deamon thread
+    thread.start()
 
 import socket
 HOST = '127.0.0.1'
 PORT = 62107
-connection_estaclished = False
+connection_established = False
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.connect((HOST,PORT)) #เชื่อมต่อ
 
-pygame.init()
+def recieve_data():
+    while True:
+        data = server.recv(1024).decode()
+        print(data)
+
+create_thread(recieve_data)
 
 #------------------------- Create a display of game ---------------------------------
 
@@ -25,7 +39,7 @@ pygame.display.set_icon (icon)
 
 pygame.mixer.music.load('s10.wav')
 pygame.mixer.music.play(-1)
-pygame.mixer.music.set_volume(0.3)
+pygame.mixer.music.set_volume(0.0)
 # Declare grid
 grid = Grid()
 
@@ -44,9 +58,11 @@ while running:
             print('MouseClick' , pygame.mouse.get_pressed())                        #ปุ่มไหนกด
             if pygame.mouse.get_pressed()[0]:                                   #คลิกได้แค่คลิกซ้าย
                 pos = pygame.mouse.get_pos() 
-                print('Position' , pos[0] // 200, pos[1] // 200)
+                cellX, cellY = pos[0] // 200, pos[1] // 200
                 if pos[0]<=600 and pos[1]<=600: 
-                    grid.get_mouse(pos[0] // 200, pos[1] // 200,player)
+                    grid.get_mouse(cellX, cellY, player)
+                    send_data = '{}-{}'.format(cellX, cellY).encode()       # Use format string to enable encode function
+                    server.send(send_data)                              # send to server 
        
                     if grid.switch_player:
                         if player == "X":

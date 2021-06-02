@@ -19,7 +19,7 @@ import socket
 
 HOST = '127.0.0.1'
 PORT = 62107
-connection_estaclished = False
+connection_established = False
 conn, addr = None, None # Define connection and address
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -27,18 +27,18 @@ server.bind((HOST, PORT))
 server.listen(1)
 print("waiting for connection...")
 
-#------------------------ Open server ------------------------------
+#------------------------  ------------------------------
 
 def recieve_data():
     pass
 
-#------------------------ Open server ------------------------------
+#------------------------ Another thread doing about server ------------------------------
 
 def waiting_for_connection():
-    global connection_estaclished, conn, addr
+    global connection_established, conn, addr
     conn, addr = server.accept() # wait for connection 
     print('Connection address:', str(addr)) # show detail of client that connected
-    connection_estaclished = True
+    connection_established = True
     recieve_data()
 
 create_thread(waiting_for_connection)
@@ -54,7 +54,7 @@ pygame.display.set_icon (icon)
 
 pygame.mixer.music.load('s10.wav')
 pygame.mixer.music.play(-1)
-pygame.mixer.music.set_volume(0.3)
+pygame.mixer.music.set_volume(0.0)
 # Declare grid
 grid = Grid()
 
@@ -69,14 +69,17 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        if event.type == pygame.MOUSEBUTTONDOWN and not grid.game_over:                 #ถ้าเกมจบจะกดไม่ได้
+        if event.type == pygame.MOUSEBUTTONDOWN and connection_established:                 #ถ้าเกมจบจะกดไม่ได้
             print('MouseClick' , pygame.mouse.get_pressed())                        #ปุ่มไหนกด
             if pygame.mouse.get_pressed()[0]:                                   #คลิกได้แค่คลิกซ้าย
                 pos = pygame.mouse.get_pos() 
-                print('Position' , pos[0] // 200, pos[1] // 200)
-                if pos[0]<=600 and pos[1]<=600: 
-                    grid.get_mouse(pos[0] // 200, pos[1] // 200,player)
-       
+                cellX, cellY = pos[0] // 200, pos[1] // 200
+                
+                if pos[0]<=600 and pos[1]<=600:             # Condition to check player click the right posotion
+                    grid.get_mouse(cellX, cellY,player)
+                    send_data = '{}-{}'.format(cellX, cellY).encode()       # Use format string to enable encode function
+                    conn.send(send_data)                    # send to client
+
                     if grid.switch_player:
                         if player == "X":
                             click_sound = pygame.mixer.Sound('nsj.wav')
