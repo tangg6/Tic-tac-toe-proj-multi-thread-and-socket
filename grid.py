@@ -71,14 +71,8 @@ class Grid: #เส้น grid
 
     def get_mouse(self, x, y, player):#ไม่ให้กดที่เดิม
         if self.get_cell_value(x, y) == 0:
-            self.switch_player = True
-            if player == "X":
-                self.set_cell_value(x, y, "X")
-            elif player == "O":
-                self.set_cell_value(x, y, "O")
+            self.set_cell_value(x, y, player)
             self.check_grid(x, y, player)
-        else:
-            self.switch_player = False
 
     #-------------------------  ---------------------------------
 

@@ -30,8 +30,17 @@ print("waiting for connection...")
 #------------------------- Recieve data from client --------------------------------
 
 def recieve_data():
+    global turn
     while True:
         data = conn.recv(1024).decode()
+        data = data.split('-')
+        x,y= int(data[0]), int(data[1])
+        if data[2] == 'yourturn':
+            turn = True
+        if data[3] == 'False':
+            grid.game_over = True
+        if grid.get_cell_value(x, y) == 0:
+            grid.set_cell_value(x, y, "O")
         print(data)
 
 #------------------------ Another thread doing about server ------------------------------
@@ -63,8 +72,10 @@ grid = Grid()
 #------------------------- Playing game --------------------------------------------
 
 running = True
-player = "X"        # First play always be X
-winner = None
+
+player = "X"        # First play always be X turn 
+turn = True         # Server is first play
+playing = 'True'
 
 running = True      # Loop check that still on game
 while running:
@@ -73,25 +84,19 @@ while running:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN and connection_established:                 #ถ้าเกมจบจะกดไม่ได้
             if pygame.mouse.get_pressed()[0]:                                   #คลิกได้แค่คลิกซ้าย
-                pos = pygame.mouse.get_pos() 
-                cellX, cellY = pos[0] // 200, pos[1] // 200
-                
-                if pos[0]<=600 and pos[1]<=600:             # Condition to check player click the right posotion
-                    grid.get_mouse(cellX, cellY,player)
-                    send_data = '{}-{}'.format(cellX, cellY).encode()       # Use format string to enable encode function
-                    conn.send(send_data)                    # send to client
-
-                    if grid.switch_player:
-                        if player == "X":
-                            click_sound = pygame.mixer.Sound('nsj.wav')
-                            click_sound.set_volume(0.4)
-                            click_sound.play()
-                            player = "O"
-                        else:
-                            click_sound = pygame.mixer.Sound('nsj2.wav')
-                            click_sound.set_volume(0.4)
-                            click_sound.play()
-                            player = "X"
+                if turn and not grid.game_over:                                   
+                    pos = pygame.mouse.get_pos() 
+                    cellX, cellY = pos[0] // 200, pos[1] // 200
+                    if pos[0]<=600 and pos[1]<=600:             # Condition to check player click the right posotion
+                        grid.get_mouse(cellX, cellY, player)
+                        click_sound = pygame.mixer.Sound('nsj.wav')
+                        click_sound.set_volume(0.4)
+                        click_sound.play()
+                        if grid.game_over:
+                            playing = 'False'
+                        send_data = '{}-{}-{}-{}'.format(cellX, cellY, 'yourturn', playing).encode()       # Use format string to enable encode function
+                        conn.send(send_data)                        # send to client
+                        turn = False
                     
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE and grid.game_over:
