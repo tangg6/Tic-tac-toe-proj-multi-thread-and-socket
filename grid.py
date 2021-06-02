@@ -2,8 +2,8 @@ import pygame
 
 import os
 
-letterX = pygame.image.load(os.path.join('letterX.png')) #รูป
-letterO = pygame.image.load(os.path.join('letterO.png'))
+letterX = pygame.image.load(os.path.join('file','letterX.png')) #รูป
+letterO = pygame.image.load(os.path.join('file','letterO.png'))
 pygame.init()
 
 

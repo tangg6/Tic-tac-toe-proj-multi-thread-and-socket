@@ -58,12 +58,12 @@ create_thread(waiting_for_connection)
 
 surface = pygame.display.set_mode((600,700))
 pygame.display.set_caption("Tic tac toe") #caption
-icon = pygame.image.load ('games.png')
+icon = pygame.image.load(os.path.join('file','games.png'))
 pygame.display.set_icon (icon)
 
 #------------------------- Import sound into game -----------------------------------
 
-pygame.mixer.music.load('s10.wav')
+pygame.mixer.music.load(os.path.join('file','s10.wav'))
 pygame.mixer.music.play(-1)
 pygame.mixer.music.set_volume(0.3)
 # Declare grid
@@ -89,7 +89,7 @@ while running:
                     cellX, cellY = pos[0] // 200, pos[1] // 200
                     if pos[0]<=600 and pos[1]<=600:             # Condition to check player click the right posotion
                         grid.get_mouse(cellX, cellY, player)
-                        click_sound = pygame.mixer.Sound('nsj.wav')
+                        click_sound = pygame.mixer.Sound(os.path.join('file','nsj.wav'))
                         click_sound.set_volume(0.4)
                         click_sound.play()
                         if grid.game_over:
