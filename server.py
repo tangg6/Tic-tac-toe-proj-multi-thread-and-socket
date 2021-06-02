@@ -27,10 +27,12 @@ server.bind((HOST, PORT))
 server.listen(1)
 print("waiting for connection...")
 
-#------------------------  ------------------------------
+#------------------------- Recieve data from client --------------------------------
 
 def recieve_data():
-    pass
+    while True:
+        data = conn.recv(1024).decode()
+        print(data)
 
 #------------------------ Another thread doing about server ------------------------------
 
@@ -70,7 +72,6 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN and connection_established:                 #ถ้าเกมจบจะกดไม่ได้
-            print('MouseClick' , pygame.mouse.get_pressed())                        #ปุ่มไหนกด
             if pygame.mouse.get_pressed()[0]:                                   #คลิกได้แค่คลิกซ้าย
                 pos = pygame.mouse.get_pos() 
                 cellX, cellY = pos[0] // 200, pos[1] // 200
@@ -91,10 +92,7 @@ while running:
                             click_sound.set_volume(0.4)
                             click_sound.play()
                             player = "X"
-
-                        grid.print_grid()  
                     
-                    print('Gameover' , grid.game_over)
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE and grid.game_over:
                 grid.clear_grid()

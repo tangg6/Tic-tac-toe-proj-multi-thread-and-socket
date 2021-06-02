@@ -21,6 +21,8 @@ connection_established = False
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.connect((HOST,PORT)) #เชื่อมต่อ
 
+#------------------------- Recieve data from server --------------------------------
+
 def recieve_data():
     while True:
         data = server.recv(1024).decode()
@@ -55,14 +57,13 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN and not grid.game_over:                 #ถ้าเกมจบจะกดไม่ได้
-            print('MouseClick' , pygame.mouse.get_pressed())                        #ปุ่มไหนกด
             if pygame.mouse.get_pressed()[0]:                                   #คลิกได้แค่คลิกซ้าย
                 pos = pygame.mouse.get_pos() 
                 cellX, cellY = pos[0] // 200, pos[1] // 200
                 if pos[0]<=600 and pos[1]<=600: 
                     grid.get_mouse(cellX, cellY, player)
                     send_data = '{}-{}'.format(cellX, cellY).encode()       # Use format string to enable encode function
-                    server.send(send_data)                              # send to server 
+                    server.send(send_data)                              # send to server
        
                     if grid.switch_player:
                         if player == "X":
@@ -75,10 +76,7 @@ while running:
                             click_sound.set_volume(0.4)
                             click_sound.play()
                             player = "X"
-
-                        grid.print_grid()  
                     
-                    print('Gameover' , grid.game_over)
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE and grid.game_over:
                 grid.clear_grid()
