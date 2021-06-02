@@ -4,7 +4,7 @@ from grid import Grid
 pygame.init()
 
 import os
-os.environ['SDL_VIDEO_WINDOW_POS'] = '200,100'
+os.environ['SDL_VIDEO_WINDOW_POS'] = '200,200'
 
 import threading
 
@@ -41,7 +41,7 @@ def recieve_data():
             grid.game_over = True
         if grid.get_cell_value(x, y) == 0:
             grid.set_cell_value(x, y, "O")
-        print(data)
+
 
 #------------------------ Another thread doing about server ------------------------------
 
@@ -65,7 +65,7 @@ pygame.display.set_icon (icon)
 
 pygame.mixer.music.load('s10.wav')
 pygame.mixer.music.play(-1)
-pygame.mixer.music.set_volume(0.0)
+pygame.mixer.music.set_volume(0.3)
 # Declare grid
 grid = Grid()
 
