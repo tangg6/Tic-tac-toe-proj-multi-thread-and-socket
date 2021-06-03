@@ -19,7 +19,7 @@ PORT = 62107
 connection_established = False
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.connect((HOST,PORT)) #เชื่อมต่อ
+server.connect((HOST,PORT)) # เชื่อมต่อ
 
 #------------------------- Recieve data from server --------------------------------
 
@@ -55,9 +55,7 @@ grid = Grid()
 
 #------------------------- Playing game --------------------------------------------
 
-running = True
-
-player = "O"        # First play always be X turn 
+player = "O"        
 turn = False 
 playing = 'True'
 

@@ -6,8 +6,6 @@ letterX = pygame.image.load(os.path.join('file','letterX.png')) #รูป
 letterO = pygame.image.load(os.path.join('file','letterO.png'))
 pygame.init()
 
-
-
 class Grid: #เส้น grid
 
     #------------------------- Create a grid -----------------------------------------
@@ -26,7 +24,7 @@ class Grid: #เส้น grid
 
     #------------------------- Size and color of grid ---------------------------------
 
-    def draw(self, surface):  #ขนาด,สีของเส้น
+    def draw(self, surface): 
         for line in self.grid_lines:
             pygame.draw.line(surface, (0,0,0), line[0], line[1], 6)
 
@@ -41,47 +39,44 @@ class Grid: #เส้น grid
 
     def draw_status(self, surface, player):
         if not self.game_over: # If still game 
-            massage = player + "'s Turn"
+            massage = player
+            
         elif self.game_over and count == 3 : # Win game 
-            # Change show player won 
-            if player == "X": 
-                player = "O"
-            elif player == "O":
-                player = "X"
-            massage = player + "'s won !"   
-        elif self.game_over and count < 3 : # Draw game 
-            massage = "Game Draw !"    
-        font = pygame.font.Font(None, 50)
+            massage = player + " won !"   
+        elif self.game_over and count < 3: # Draw game
+            massage = player + " lose !"
+         
+        font = pygame.font.Font(None, 70)
         text = font.render(massage, True, (255, 255, 255))    
         surface.fill((0,0,0), (0, 600, 600, 100))
         text_rect = text.get_rect(center =(600 / 2, 650)) 
         surface.blit(text, text_rect) 
        
-    #-------------------------  ---------------------------------
+    #------------------------- Return value x , y ---------------------------------
 
     def get_cell_value(self, x, y): #ส่งค่ากลับ ถ้าไม่ใส่จะทำทับเลย
         return self.grid[y][x]
 
-    #-------------------------  ---------------------------------
+    #------------------------- Set value x, y ---------------------------------
 
     def set_cell_value(self, x, y, value):
         self.grid[y][x] = value
 
     #------------------------- Unable to click the same place ---------------------------------
 
-    def get_mouse(self, x, y, player):#ไม่ให้กดที่เดิม
+    def get_mouse(self, x, y, player):
         if self.get_cell_value(x, y) == 0:
             self.set_cell_value(x, y, player)
             self.check_grid(x, y, player)
 
-    #-------------------------  ---------------------------------
+    #------------------------- Define bound of game ---------------------------------
 
     def is_within_bounds(self, x, y):
         return x >= 0 and x < 3 and y >= 0 and y < 3        
 
     #------------------------- Condition to check game rules ---------------------------------
 
-    def check_grid(self, x, y, player): #ตรวจตำแหน่งรอบถ้ามีติดกันจะนำมาบวกครบ3จะชนะ
+    def check_grid(self, x, y, player): 
         # Global to check game draw
         global count 
         count = 1
@@ -127,8 +122,8 @@ class Grid: #เส้น grid
             self.game_over = True
         else: #ถ้าเต็ม
             self.game_over = self.is_grid_full()
-             
-    #-------------------------  ---------------------------------
+
+    #------------------------- Condition to check board full ---------------------------------
     
     def is_grid_full(self): 
         for row in self.grid:
@@ -137,15 +132,11 @@ class Grid: #เส้น grid
                     return False
         return True
 
-    #-------------------------  ---------------------------------
+    #------------------------- Reset board ---------------------------------
 
     def clear_grid(self):
         for y in range(len(self.grid)):
             for x in range(len(self.grid[y])):
                 self.set_cell_value(x, y, 0)        
 
-    #-------------------------  ---------------------------------
 
-    def print_grid(self): #ทำให้listออกมาเป็นแถว
-        for row in self.grid:
-            print(row)  

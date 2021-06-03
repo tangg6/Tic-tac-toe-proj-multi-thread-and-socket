@@ -34,13 +34,15 @@ def recieve_data():
     while True:
         data = conn.recv(1024).decode()
         data = data.split('-')
-        x,y= int(data[0]), int(data[1])
+        x,y = int(data[0]), int(data[1])
         if data[2] == 'yourturn':
             turn = True
         if data[3] == 'False':
             grid.game_over = True
         if grid.get_cell_value(x, y) == 0:
             grid.set_cell_value(x, y, "O")
+        
+
 
 
 #------------------------ Another thread doing about server ------------------------------
@@ -71,8 +73,6 @@ grid = Grid()
 
 #------------------------- Playing game --------------------------------------------
 
-running = True
-
 player = "X"        # First play always be X turn 
 turn = True         # Server is first play
 playing = 'True'
@@ -94,7 +94,7 @@ while running:
                         click_sound.play()
                         if grid.game_over:
                             playing = 'False'
-                        send_data = '{}-{}-{}-{}'.format(cellX, cellY, 'yourturn', playing).encode()       # Use format string to enable encode function
+                        send_data = '{}-{}-{}-{}'.format(cellX, cellY, 'yourturn', playing,).encode()       # Use format string to enable encode function
                         conn.send(send_data)                        # send to client
                         turn = False
                     
