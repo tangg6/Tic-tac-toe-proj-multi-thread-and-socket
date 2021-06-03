@@ -2,8 +2,8 @@ import pygame
 
 import os
 
-letterX = pygame.image.load(os.path.join('file','letterX.png')) #รูป
-letterO = pygame.image.load(os.path.join('file','letterO.png'))
+img_X = pygame.image.load(os.path.join('file','img_X.png')) #รูป
+img_O = pygame.image.load(os.path.join('file','img_O.png'))
 pygame.init()
 
 class Grid: #เส้น grid
@@ -31,23 +31,23 @@ class Grid: #เส้น grid
         for y in range(len(self.grid)):            #ดึงรูปมาใส่ตำแหน่ง
             for x in range(len(self.grid[y])):
                 if self.get_cell_value(x, y) == "X":
-                    surface.blit(letterX, ((x*200)+1, (y*200)+1))
+                    surface.blit(img_X, ((x*200)+1, (y*200)+1))
                 elif self.get_cell_value(x, y) == "O":
-                    surface.blit(letterO, ((x*200)+1, (y*200)+1))
+                    surface.blit(img_O, ((x*200)+1, (y*200)+1))
 
     #------------------------- Check the game is still playing ---------------------------------
 
     def draw_status(self, surface, player):
         if not self.game_over: # If still game 
-            massage = player
+            message = player
             
         elif self.game_over and count == 3 : # Win game 
-            massage = player + " won !"   
+            message = player + " won !"   
         elif self.game_over and count < 3: # Draw game
-            massage = player + " lose !"
+            message = player + " lose !"
          
         font = pygame.font.Font(None, 70)
-        text = font.render(massage, True, (255, 255, 255))    
+        text = font.render(message, True, (255, 255, 255))    
         surface.fill((0,0,0), (0, 600, 600, 100))
         text_rect = text.get_rect(center =(600 / 2, 650)) 
         surface.blit(text, text_rect) 
