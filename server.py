@@ -106,7 +106,7 @@ while running:
             elif event.key == pygame.K_ESCAPE:
                 running = False                    
                 
-    surface.fill((255,255,255))
+    surface.fill((45,45,45))
 
     # Put grid line in surface
     grid.draw(surface)

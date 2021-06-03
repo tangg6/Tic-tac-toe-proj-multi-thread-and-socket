@@ -26,14 +26,14 @@ class Grid: #เส้น grid
 
     def draw(self, surface): 
         for line in self.grid_lines:
-            pygame.draw.line(surface, (0,0,0), line[0], line[1], 6)
+            pygame.draw.line(surface, (30,30,30), line[0], line[1], 12)
 
         for y in range(len(self.grid)):            #ดึงรูปมาใส่ตำแหน่ง
             for x in range(len(self.grid[y])):
                 if self.get_cell_value(x, y) == "X":
-                    surface.blit(letterX, (x*200, y*200))
+                    surface.blit(letterX, ((x*200)+1, (y*200)+1))
                 elif self.get_cell_value(x, y) == "O":
-                    surface.blit(letterO, (x*200, y*200))
+                    surface.blit(letterO, ((x*200)+1, (y*200)+1))
 
     #------------------------- Check the game is still playing ---------------------------------
 
