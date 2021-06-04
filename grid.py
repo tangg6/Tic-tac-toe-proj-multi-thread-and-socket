@@ -40,12 +40,18 @@ class Grid: #เส้น grid
     def draw_status(self, surface, player):
         if not self.game_over: # If still game 
             message = player
-            
-        elif self.game_over and count == 3 : # Win game 
-            message = player + " won !"   
-        elif self.game_over and count < 3: # Draw game
-            message = player + " lose !"
-         
+        elif self.game_over:
+            game_over_message = "Press spacebar to restart"
+            font = pygame.font.Font(None, 45)
+            game_over_text = font.render(game_over_message, True, (255, 255, 255))    
+            surface.fill((0,0,0), (100, 275, 400, 50))
+            text_rect = game_over_text.get_rect(center =(600 / 2, 300)) 
+            surface.blit(game_over_text, text_rect) 
+            if self.game_over and count == 3 : # Win game 
+                message = player + " won !"   
+            elif self.game_over and count < 3: # Draw game
+                message = player + " lose !"
+        
         font = pygame.font.Font(None, 70)
         text = font.render(message, True, (255, 255, 255))    
         surface.fill((0,0,0), (0, 600, 600, 100))

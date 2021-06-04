@@ -13,7 +13,7 @@ def create_thread(target):
     thread.daemon = True # Use deamon thread
     thread.start()
 
-#------------------------ Open server ------------------------------
+#------------------------- Open server ------------------------------
 
 import socket
 
@@ -43,8 +43,6 @@ def recieve_data():
             grid.set_cell_value(x, y, "O")
         
 
-
-
 #------------------------ Another thread doing about server ------------------------------
 
 def waiting_for_connection():
@@ -67,7 +65,7 @@ pygame.display.set_icon (icon)
 
 pygame.mixer.music.load(os.path.join('file','s10.wav'))
 pygame.mixer.music.play(-1)
-pygame.mixer.music.set_volume(0.3)
+pygame.mixer.music.set_volume(0.0)
 # Declare grid
 grid = Grid()
 
@@ -94,7 +92,7 @@ while running:
                         click_sound.play()
                         if grid.game_over:
                             playing = 'False'
-                        send_data = '{}-{}-{}-{}'.format(cellX, cellY, 'yourturn', playing,).encode()       # Use format string to enable encode function
+                        send_data = '{}-{}-{}-{}'.format(cellX, cellY, 'yourturn', playing).encode()       # Use format string to enable encode function
                         conn.send(send_data)                        # send to client
                         turn = False
                     

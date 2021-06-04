@@ -10,7 +10,7 @@ import threading
 
 def create_thread(target):
     thread = threading.Thread(target=target)
-    thread.daemon = True # Use deamon thread
+    thread.setDeamon(True) # Use deamon thread
     thread.start()
 
 import socket
@@ -49,7 +49,7 @@ pygame.display.set_icon (icon)
 
 pygame.mixer.music.load(os.path.join('file','s10.wav'))
 pygame.mixer.music.play(-1)
-pygame.mixer.music.set_volume(0.3)
+pygame.mixer.music.set_volume(0.0)
 # Declare grid
 grid = Grid()
 
